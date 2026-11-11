@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Padaria Forno d'Ouro — Pão quente todos os dias</title>
+<meta name="description" content="Padaria artesanal de bairro. Pão acabado de sair do forno, pastéis de nata, bolos caseiros e salgados. Visite-nos ou faça a sua encomenda.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fdf8f1;
+    --cream-2:#f7eee1;
+    --crust:#b5652b;
+    --crust-dark:#8a4a1c;
+    --wheat:#e9c98f;
+    --ink:#2e2219;
+    --muted:#6f5d4f;
+    --white:#ffffff;
+    --radius:18px;
+    --shadow:0 10px 30px rgba(84,52,24,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  img{display:block;width:100%;height:100%;object-fit:cover}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;font-weight:600}
+  .container{width:min(1180px,92%);margin-inline:auto}
+  .eyebrow{display:inline-block;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--crust);font-weight:600;margin-bottom:.8rem}
+  section{padding:96px 0}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 52px}
+  .section-head h2{font-size:clamp(2rem,4vw,2.9rem)}
+  .section-head p{color:var(--muted);margin-top:14px;font-size:1.06rem}
+
+  /* imagem com fallback elegante caso a foto não carregue */
+  .ph{background:linear-gradient(135deg,var(--wheat),#d9a35f);position:relative;overflow:hidden}
+  .ph img{transition:transform .8s ease;color:transparent}
+
+  /* ---------- NAV ---------- */
+  header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,box-shadow .3s}
+  header.scrolled{background:rgba(253,248,241,.95);backdrop-filter:blur(8px);box-shadow:0 2px 20px rgba(0,0,0,.06)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .logo{font-family:Fraunces,serif;font-size:1.5rem;font-weight:700;color:var(--white);display:flex;align-items:center;gap:10px;transition:color .3s}
+  .logo span{font-style:italic;font-weight:400;color:var(--wheat)}
+  header.scrolled .logo{color:var(--ink)}
+  header.scrolled .logo span{color:var(--crust)}
+  .nav ul{display:flex;gap:34px;list-style:none}
+  .nav ul a{color:var(--white);font-weight:500;font-size:.95rem;transition:color .3s}
+  header.scrolled .nav ul a{color:var(--ink)}
+  .nav ul a:hover{color:var(--wheat)}
+  header.scrolled .nav ul a:hover{color:var(--crust)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:999px;font-weight:600;font-size:.97rem;transition:transform .2s,box-shadow .2s,background .2s;cursor:pointer;border:0}
+  .btn-primary{background:var(--crust);color:var(--white);box-shadow:0 8px 20px rgba(181,101,43,.35)}
+  .btn-primary:hover{background:var(--crust-dark);transform:translateY(-2px)}
+  .btn-light{background:var(--white);color:var(--ink)}
+  .btn-light:hover{transform:translateY(-2px)}
+  .nav .btn{padding:10px 22px}
+  .menu-toggle{display:none;background:none;border:0;color:var(--white);font-size:1.7rem;cursor:pointer}
+  header.scrolled .menu-toggle{color:var(--ink)}
+
+
+  /* ---------- IDIOMAS ---------- */
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{position:relative}
+  .lang-btn{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1.5px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);color:var(--white);font:inherit;font-weight:600;font-size:.9rem;cursor:pointer;transition:.3s}
+  .lang-btn:hover{background:rgba(255,255,255,.25)}
+  header.scrolled .lang-btn{color:var(--ink);border-color:var(--cream-2);background:var(--white)}
+  .flag{width:22px;height:16px;object-fit:cover;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none}
+  .caret{font-size:.7rem;opacity:.8}
+  .nav ul.lang-menu{display:block;gap:0}
+  .lang-menu{position:absolute;right:0;top:calc(100% + 10px);background:var(--white);border-radius:14px;box-shadow:0 14px 40px rgba(46,28,14,.18);list-style:none;padding:8px;min-width:200px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:.2s;z-index:60}
+  .lang.open .lang-menu{opacity:1;visibility:visible;transform:none}
+  .lang-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:0;background:none;border-radius:10px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;text-align:left}
+  .lang-menu button:hover{background:var(--cream)}
+  .lang-menu button.active{background:var(--cream-2);font-weight:600}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;color:var(--white);overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:-2}
+  .hero-bg img{animation:zoom 22s ease-in-out infinite alternate}
+  @keyframes zoom{from{transform:scale(1)}to{transform:scale(1.1)}}
+  .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(40,24,12,.82) 0%,rgba(40,24,12,.55) 45%,rgba(40,24,12,.1) 100%)}
+  .hero-content{max-width:640px}
+  .hero .eyebrow{color:var(--wheat)}
+  .hero h1{font-size:clamp(2.7rem,6.5vw,5rem);margin-bottom:22px}
+  .hero h1 em{color:var(--wheat);font-weight:400}
+  .hero p{font-size:1.18rem;opacity:.92;max-width:520px;margin-bottom:36px}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-badges{display:flex;gap:34px;margin-top:56px;flex-wrap:wrap}
+  .hero-badges div strong{display:block;font-family:Fraunces,serif;font-size:2rem;color:var(--wheat)}
+  .hero-badges div{font-size:.9rem;opacity:.9}
+  .hot{position:absolute;right:5%;bottom:10%;background:var(--white);color:var(--ink);padding:16px 22px;border-radius:16px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center;animation:float 4s ease-in-out infinite}
+  .hot .dot{width:12px;height:12px;border-radius:50%;background:#e04b1a;box-shadow:0 0 0 0 rgba(224,75,26,.6);animation:pulse 1.8s infinite}
+  .hot small{display:block;color:var(--muted);font-size:.8rem}
+  @keyframes pulse{70%{box-shadow:0 0 0 12px rgba(224,75,26,0)}100%{box-shadow:0 0 0 0 rgba(224,75,26,0)}}
+  @keyframes float{50%{transform:translateY(-8px)}}
+
+  /* ---------- SOBRE ---------- */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+  .about-imgs{display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:220px 220px;gap:16px}
+  .about-imgs .ph{border-radius:var(--radius);box-shadow:var(--shadow)}
+  .about-imgs .ph:first-child{grid-row:span 2}
+  .about h2{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:20px}
+  .about p{color:var(--muted);margin-bottom:16px;font-size:1.05rem}
+  .features{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
+  .feature{display:flex;gap:12px;align-items:flex-start}
+  .feature .ic{flex:none;width:44px;height:44px;border-radius:12px;background:var(--cream-2);display:grid;place-items:center;font-size:1.3rem}
+  .feature strong{display:block;font-size:.98rem}
+  .feature small{color:var(--muted)}
+
+  /* ---------- PRODUTOS ---------- */
+  .products{background:var(--white)}
+  .tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:44px}
+  .tab{padding:10px 22px;border-radius:999px;border:1.5px solid var(--cream-2);background:var(--cream);font:inherit;font-weight:500;cursor:pointer;transition:.2s;color:var(--ink)}
+  .tab.active,.tab:hover{background:var(--crust);border-color:var(--crust);color:var(--white)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:26px}
+  .card{background:var(--cream);border-radius:var(--radius);overflow:hidden;transition:transform .3s,box-shadow .3s}
+  .card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+  .card:hover img{transform:scale(1.07)}
+  .card .ph{height:220px}
+  .card-body{padding:20px 22px 24px}
+  .card-body .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .card h3{font-size:1.25rem}
+  .price{font-family:Fraunces,serif;font-weight:700;color:var(--crust);font-size:1.15rem;white-space:nowrap}
+  .card p{color:var(--muted);font-size:.93rem;margin-top:6px}
+  .tag{position:absolute;top:14px;left:14px;background:var(--white);color:var(--crust);font-size:.75rem;font-weight:600;padding:5px 12px;border-radius:999px;z-index:2}
+  .card.hide{display:none}
+
+  /* ---------- FORNADAS ---------- */
+  .batches{background:linear-gradient(180deg,var(--cream) 0%,var(--cream-2) 100%)}
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .slot{background:var(--white);border-radius:var(--radius);padding:30px 24px;text-align:center;box-shadow:0 4px 16px rgba(84,52,24,.06);position:relative}
+  .slot .time{font-family:Fraunces,serif;font-size:2.3rem;color:var(--crust);font-weight:700}
+  .slot h3{font-size:1.1rem;margin:6px 0 8px}
+  .slot p{color:var(--muted);font-size:.92rem}
+  .slot .emoji{font-size:2rem;margin-bottom:6px}
+
+  /* ---------- TESTEMUNHOS ---------- */
+  .reviews{background:var(--white)}
+  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .review{background:var(--cream);border-radius:var(--radius);padding:30px}
+  .stars{color:#e3a52b;letter-spacing:3px;margin-bottom:12px}
+  .review p{font-family:Fraunces,serif;font-style:italic;font-size:1.1rem;margin-bottom:18px}
+  .review strong{font-size:.95rem}
+  .review small{display:block;color:var(--muted)}
+
+  /* ---------- CTA ENCOMENDAS ---------- */
+  .cta{position:relative;color:var(--white);text-align:center;padding:120px 0;overflow:hidden}
+  .cta .ph{position:absolute;inset:0;z-index:-2}
+  .cta::before{content:"";position:absolute;inset:0;background:rgba(46,28,14,.72);z-index:-1}
+  .cta h2{font-size:clamp(2rem,4.5vw,3.2rem);max-width:760px;margin:0 auto 18px}
+  .cta p{max-width:560px;margin:0 auto 34px;opacity:.9;font-size:1.1rem}
+  .cta .hero-actions{justify-content:center}
+  .btn-wa{background:#25d366;color:#fff}
+  .btn-wa:hover{transform:translateY(-2px);background:#1eb457}
+
+  /* ---------- VISITE ---------- */
+  .visit{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:stretch}
+  .info-card{background:var(--white);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow)}
+  .info-card h2{font-size:2.2rem;margin-bottom:24px}
+  .info-row{display:flex;gap:14px;margin-bottom:22px}
+  .info-row .ic{font-size:1.4rem;flex:none}
+  .info-row strong{display:block}
+  .info-row span{color:var(--muted)}
+  .hours{width:100%;border-collapse:collapse;margin-top:4px}
+  .hours td{padding:5px 0;color:var(--muted);font-size:.95rem}
+  .hours td:last-child{text-align:right;color:var(--ink);font-weight:500}
+  .hours tr.today td{color:var(--crust);font-weight:600}
+  .map{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);min-height:420px}
+  .map iframe{width:100%;height:100%;border:0;min-height:420px}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:#d8cbbd;padding:60px 0 30px}
+  .foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px}
+  footer .logo{color:var(--white);margin-bottom:12px}
+  footer h4{color:var(--white);font-family:Fraunces,serif;font-size:1.1rem;margin-bottom:14px}
+  footer li{list-style:none;margin-bottom:8px}
+  footer a:hover{color:var(--wheat)}
+  .copy{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;font-size:.85rem;text-align:center;opacity:.7}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVO ---------- */
+  @media (max-width:960px){
+    .about,.visit{grid-template-columns:1fr}
+    .timeline{grid-template-columns:repeat(2,1fr)}
+    .reviews-grid{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr}
+    .hot{display:none}
+  }
+  @media (max-width:820px){
+    .nav ul{display:none}
+    .menu-toggle{display:block}
+    .nav ul.open{display:flex;flex-direction:column;position:absolute;top:76px;left:0;right:0;background:var(--cream);padding:24px 6%;gap:18px;box-shadow:0 10px 20px rgba(0,0,0,.08)}
+    .nav ul.open a{color:var(--ink)}
+    section{padding:70px 0}
+  }
+  @media (max-width:560px){
+    .timeline{grid-template-columns:1fr}
+    .about-imgs{grid-template-rows:160px 160px}
+    .features{grid-template-columns:1fr}
+    .hero-badges{gap:22px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header id="header">
+  <div class="container nav">
+    <a href="#inicio" class="logo">🥖 Forno <span>d'Ouro</span></a>
+    <ul id="menu">
+      <li><a href="#sobre" data-i18n="nav1">A Padaria</a></li>
+      <li><a href="#produtos" data-i18n="nav2">Produtos</a></li>
+      <li><a href="#fornadas" data-i18n="nav3">Fornadas</a></li>
+      <li><a href="#visite" data-i18n="nav4">Visite-nos</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang" id="lang">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+          <img class="flag" id="langFlag" src="https://flagcdn.com/w40/pt.png" alt="" width="22" height="16"><span id="langCode">PT</span><span class="caret">▾</span>
+        </button>
+        <ul class="lang-menu" id="langMenu">
+        <li><button type="button" data-lang="pt"><img class="flag" src="https://flagcdn.com/w40/pt.png" alt="" width="22" height="16">Português</button></li>
+        <li><button type="button" data-lang="en"><img class="flag" src="https://flagcdn.com/w40/gb.png" alt="" width="22" height="16">English</button></li>
+        <li><button type="button" data-lang="es"><img class="flag" src="https://flagcdn.com/w40/es.png" alt="" width="22" height="16">Español</button></li>
+        <li><button type="button" data-lang="fr"><img class="flag" src="https://flagcdn.com/w40/fr.png" alt="" width="22" height="16">Français</button></li>
+        <li><button type="button" data-lang="it"><img class="flag" src="https://flagcdn.com/w40/it.png" alt="" width="22" height="16">Italiano</button></li>
+        <li><button type="button" data-lang="de"><img class="flag" src="https://flagcdn.com/w40/de.png" alt="" width="22" height="16">Deutsch</button></li>
+        <li><button type="button" data-lang="uk"><img class="flag" src="https://flagcdn.com/w40/ua.png" alt="" width="22" height="16">Українська</button></li>
+        <li><button type="button" data-lang="ru"><img class="flag" src="https://flagcdn.com/w40/ru.png" alt="" width="22" height="16">Русский</button></li>
+        <li><button type="button" data-lang="ja"><img class="flag" src="https://flagcdn.com/w40/jp.png" alt="" width="22" height="16">日本語</button></li>
+        <li><button type="button" data-lang="zh"><img class="flag" src="https://flagcdn.com/w40/cn.png" alt="" width="22" height="16">中文</button></li>
+        </ul>
+      </div>
+      <button class="menu-toggle" aria-label="Abrir menu" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="inicio">
+  <div class="hero-bg ph"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=2000&q=80" alt="Pães acabados de sair do forno"></div>
+  <div class="container">
+    <div class="hero-content">
+      <span class="eyebrow" data-i18n="h_eye">Padaria artesanal desde 1987</span>
+      <h1 data-i18n="h_t">O cheiro a pão quente <em>começa aqui.</em></h1>
+      <p data-i18n="h_p">Todas as madrugadas acendemos o forno para que o seu dia comece com pão estaladiço, pastéis de nata dourados e bolos feitos como em casa.</p>
+      <div class="hero-actions">
+        <a href="#produtos" class="btn btn-primary" data-i18n="h_b1">Ver os nossos produtos →</a>
+        <a href="#visite" class="btn btn-light" data-i18n="h_b2">Como chegar</a>
+      </div>
+      <div class="hero-badges">
+        <div><strong>5h00</strong><span data-i18n="bd1">primeira fornada</span></div>
+        <div><strong>40+</strong><span data-i18n="bd2">produtos diários</span></div>
+        <div><strong>4,9★</strong><span data-i18n="bd3">no Google</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hot"><div class="dot"></div><div><strong data-i18n="hot_t">Pão quente agora!</strong><small data-i18n="hot_s">Próxima fornada às 12h00</small></div></div>
+</section>
+
+<!-- ================= SOBRE ================= -->
+<section id="sobre">
+  <div class="container about">
+    <div class="about-imgs reveal">
+      <div class="ph"><img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=900&q=80" alt="Pão de massa-mãe"></div>
+      <div class="ph"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=700&q=80" alt="Croissants dourados"></div>
+      <div class="ph"><img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=700&q=80" alt="Interior da padaria"></div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow" data-i18n="a_eye">A nossa história</span>
+      <h2 data-i18n="a_h">Feito à mão, com tempo e com farinha portuguesa.</h2>
+      <p data-i18n="a_p1">Somos uma padaria de bairro, de família. A receita do nosso pão passou de avós para netos e continua a ser feita da mesma forma: massa-mãe, fermentação lenta e forno bem quente.</p>
+      <p data-i18n="a_p2">Aqui conhece-se o cliente pelo nome e guarda-se o último pão de Deus para quem chega mais tarde.</p>
+      <div class="features">
+        <div class="feature"><div class="ic">🌾</div><div><strong data-i18n="f1t">Farinhas nacionais</strong><small data-i18n="f1s">De moagens portuguesas</small></div></div>
+        <div class="feature"><div class="ic">⏳</div><div><strong data-i18n="f2t">Fermentação lenta</strong><small data-i18n="f2s">Até 24 horas de massa-mãe</small></div></div>
+        <div class="feature"><div class="ic">🔥</div><div><strong data-i18n="f3t">Várias fornadas</strong><small data-i18n="f3s">Pão quente ao longo do dia</small></div></div>
+        <div class="feature"><div class="ic">❤️</div><div><strong data-i18n="f4t">Sem conservantes</strong><small data-i18n="f4s">Só ingredientes verdadeiros</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUTOS ================= -->
+<section class="products" id="produtos">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="p_eye">Do nosso forno</span>
+      <h2 data-i18n="p_h">Os favoritos da casa</h2>
+      <p data-i18n="p_p">Uma pequena amostra do que encontra todos os dias no nosso balcão. Venha cedo — os pastéis de nata voam!</p>
+    </div>
+
+    <div class="tabs reveal">
+      <button class="tab active" data-f="all" data-i18n="t_all">Tudo</button>
+      <button class="tab" data-f="pao" data-i18n="t_pao">Pão</button>
+      <button class="tab" data-f="pastelaria" data-i18n="t_past">Pastelaria</button>
+      <button class="tab" data-f="bolos" data-i18n="t_bol">Bolos</button>
+      <button class="tab" data-f="salgados" data-i18n="t_sal">Salgados & Café</button>
+    </div>
+
+    <div class="grid" id="grid">
+      <article class="card reveal" data-c="pastelaria">
+        <div class="ph" style="position:relative"><span class="tag" data-i18n="tag1">⭐ Mais vendido</span><img src="https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=800&q=80" alt="Pastéis de nata"></div>
+        <div class="card-body"><div class="top"><h3>Pastel de Nata</h3><span class="price">1,20 €</span></div><p data-i18n="d1">Massa folhada estaladiça e creme aveludado, com canela q.b.</p></div>
+      </article>
+      <article class="card reveal" data-c="pao">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=800&q=80" alt="Pão de massa-mãe"></div>
+        <div class="card-body"><div class="top"><h3 data-i18n="n_mm">Pão de Massa-Mãe</h3><span class="price">3,50 €</span></div><p data-i18n="d2">Côdea crocante, miolo húmido. Fermentado durante 24 horas.</p></div>
+      </article>
+      <article class="card reveal" data-c="pao">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877?auto=format&fit=crop&w=800&q=80" alt="Papo-secos"></div>
+        <div class="card-body"><div class="top"><h3>Papo-Seco</h3><span class="price">0,20 €</span></div><p data-i18n="d3">O clássico do pequeno-almoço português, sempre quentinho.</p></div>
+      </article>
+      <article class="card reveal" data-c="pastelaria">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80" alt="Croissants"></div>
+        <div class="card-body"><div class="top"><h3>Croissant Brioche</h3><span class="price">1,10 €</span></div><p data-i18n="d4">Fofo e amanteigado. Simples, misto ou com chocolate.</p></div>
+      </article>
+      <article class="card reveal" data-c="pastelaria">
+        <div class="ph" style="position:relative"><span class="tag" data-i18n="tag2">Só ao fim de semana</span><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=800&q=80" alt="Bolas de Berlim"></div>
+        <div class="card-body"><div class="top"><h3>Bola de Berlim</h3><span class="price">1,50 €</span></div><p data-i18n="d5">Massa leve, açúcar por fora e creme de ovos generoso.</p></div>
+      </article>
+      <article class="card reveal" data-c="bolos">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80" alt="Bolo de chocolate"></div>
+        <div class="card-body"><div class="top"><h3 data-i18n="n_choc">Bolo de Chocolate</h3><span class="price">2,20 €<small style="font-size:.7em;font-weight:400" data-i18n="slice"> /fatia</small></span></div><p data-i18n="d6">Húmido e intenso. Também por encomenda, inteiro.</p></div>
+      </article>
+      <article class="card reveal" data-c="bolos">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=800&q=80" alt="Tarte de frutos vermelhos"></div>
+        <div class="card-body"><div class="top"><h3 data-i18n="n_tarte">Tarte de Frutos Vermelhos</h3><span class="price">2,50 €<small style="font-size:.7em;font-weight:400" data-i18n="slice"> /fatia</small></span></div><p data-i18n="d7">Base amanteigada, creme pasteleiro e fruta fresca da época.</p></div>
+      </article>
+      <article class="card reveal" data-c="pao">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=800&q=80" alt="Broa de milho"></div>
+        <div class="card-body"><div class="top"><h3>Broa de Milho</h3><span class="price">2,80 €</span></div><p data-i18n="d8">Receita tradicional do norte, densa e perfumada.</p></div>
+      </article>
+      <article class="card reveal" data-c="bolos">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80" alt="Biscoitos caseiros"></div>
+        <div class="card-body"><div class="top"><h3 data-i18n="n_bisc">Biscoitos Caseiros</h3><span class="price">12 €<small style="font-size:.7em;font-weight:400"> /kg</small></span></div><p data-i18n="d9">De manteiga, de canela ou com pepitas de chocolate.</p></div>
+      </article>
+      <article class="card reveal" data-c="salgados">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80" alt="Café expresso"></div>
+        <div class="card-body"><div class="top"><h3>Bica & Pastel</h3><span class="price">1,90 €</span></div><p data-i18n="d10">Café expresso com pastel de nata. O par perfeito.</p></div>
+      </article>
+      <article class="card reveal" data-c="salgados">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1530610476181-d83430b64dcd?auto=format&fit=crop&w=800&q=80" alt="Pão com chouriço"></div>
+        <div class="card-body"><div class="top"><h3 data-i18n="n_chour">Pão com Chouriço</h3><span class="price">2,30 €</span></div><p data-i18n="d11">Saído do forno, com chouriço de fumeiro. Irresistível.</p></div>
+      </article>
+      <article class="card reveal" data-c="pastelaria">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?auto=format&fit=crop&w=800&q=80" alt="Pastelaria variada"></div>
+        <div class="card-body"><div class="top"><h3>Pão de Deus</h3><span class="price">1,30 €</span></div><p data-i18n="d12">Brioche fofo com cobertura de coco tostado.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FORNADAS ================= -->
+<section class="batches" id="fornadas">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="s_eye">Pão quente o dia todo</span>
+      <h2 data-i18n="s_h">Horário das fornadas</h2>
+      <p data-i18n="s_p">Não precisa de madrugar para levar pão acabado de fazer. Escolha a sua hora.</p>
+    </div>
+    <div class="timeline">
+      <div class="slot reveal"><div class="emoji">🌅</div><div class="time">7h00</div><h3 data-i18n="s1t">Pequeno-almoço</h3><p data-i18n="s1p">Papo-secos, croissants e os primeiros pastéis de nata.</p></div>
+      <div class="slot reveal"><div class="emoji">☀️</div><div class="time">12h00</div><h3 data-i18n="s2t">Almoço</h3><p data-i18n="s2p">Pão de mistura, broa e pão com chouriço.</p></div>
+      <div class="slot reveal"><div class="emoji">☕</div><div class="time">16h00</div><h3 data-i18n="s3t">Lanche</h3><p data-i18n="s3p">Bolos do dia, pão de Deus e mais pastéis de nata.</p></div>
+      <div class="slot reveal"><div class="emoji">🌙</div><div class="time">18h30</div><h3 data-i18n="s4t">Jantar</h3><p data-i18n="s4p">Massa-mãe e pão alentejano para levar para casa.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTEMUNHOS ================= -->
+<section class="reviews">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="r_eye">Quem prova, volta</span>
+      <h2 data-i18n="r_h">O que dizem os nossos clientes</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review reveal"><div class="stars">★★★★★</div><p data-i18n="r1">“Os melhores pastéis de nata do bairro, sem dúvida. Ainda quentes ao fim da tarde!”</p><strong>Ana M.</strong><small data-i18n="r1s">Cliente há 6 anos</small></div>
+      <div class="review reveal"><div class="stars">★★★★★</div><p data-i18n="r2">“O pão de massa-mãe dura a semana inteira e é sempre fresco. Atendimento de família.”</p><strong>João P.</strong><small data-i18n="rg">Avaliação Google</small></div>
+      <div class="review reveal"><div class="stars">★★★★★</div><p data-i18n="r3">“Encomendei o bolo de anos da minha filha e foi um sucesso. Recomendo de olhos fechados.”</p><strong>Carla S.</strong><small data-i18n="rg">Avaliação Google</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ENCOMENDAS ================= -->
+<section class="cta" id="encomendas">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=2000&q=80" alt=""></div>
+  <div class="container reveal">
+    <span class="eyebrow" style="color:var(--wheat)" data-i18n="c_eye">Encomendas</span>
+    <h2 data-i18n="c_h">Bolos de aniversário, pão para eventos ou o seu pequeno-almoço reservado.</h2>
+    <p data-i18n="c_p">Fale connosco por WhatsApp ou telefone. Preparamos tudo com 24h de antecedência.</p>
+    <div class="hero-actions">
+      <a class="btn btn-wa" href="https://wa.me/351912345678?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20uma%20encomenda." target="_blank" rel="noopener" data-i18n="c_wa">💬 Encomendar por WhatsApp</a>
+      <a class="btn btn-light" href="tel:+351212345678">📞 21 234 5678</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VISITE ================= -->
+<section id="visite">
+  <div class="container visit">
+    <div class="info-card reveal">
+      <span class="eyebrow" data-i18n="nav4">Visite-nos</span>
+      <h2 data-i18n="v_h">Esperamos por si</h2>
+      <div class="info-row"><div class="ic">📍</div><div><strong data-i18n="v_addr">Morada</strong><span>Rua do Forno, 12<br>1100-000 Lisboa</span></div></div>
+      <div class="info-row"><div class="ic">📞</div><div><strong data-i18n="v_con">Contacto</strong><span>21 234 5678 · 912 345 678</span></div></div>
+      <div class="info-row"><div class="ic">🕖</div><div style="flex:1"><strong data-i18n="v_hrs">Horário</strong>
+        <table class="hours" id="hours">
+          <tr data-d="1"><td data-i18n="dw1">Segunda-feira</td><td>6h30 – 20h00</td></tr>
+          <tr data-d="2"><td data-i18n="dw2">Terça-feira</td><td>6h30 – 20h00</td></tr>
+          <tr data-d="3"><td data-i18n="dw3">Quarta-feira</td><td>6h30 – 20h00</td></tr>
+          <tr data-d="4"><td data-i18n="dw4">Quinta-feira</td><td>6h30 – 20h00</td></tr>
+          <tr data-d="5"><td data-i18n="dw5">Sexta-feira</td><td>6h30 – 20h00</td></tr>
+          <tr data-d="6"><td data-i18n="dw6">Sábado</td><td>7h00 – 19h00</td></tr>
+          <tr data-d="0"><td data-i18n="dw0">Domingo</td><td>7h00 – 13h00</td></tr>
+        </table></div></div>
+      <a href="https://maps.google.com/?q=Lisboa" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:6px" data-i18n="v_map">Abrir no Google Maps</a>
+    </div>
+    <div class="map reveal">
+      <iframe src="https://www.google.com/maps?q=Lisboa&output=embed" loading="lazy" title="Mapa da padaria"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div>
+        <div class="logo">🥖 Forno <span>d'Ouro</span></div>
+        <p style="max-width:360px" data-i18n="f_desc">Padaria e pastelaria artesanal. Pão quente, doçaria portuguesa e o melhor café do bairro.</p>
+      </div>
+      <div><h4 data-i18n="f_nav">Navegação</h4><ul><li><a href="#produtos" data-i18n="nav2">Produtos</a></li><li><a href="#fornadas" data-i18n="nav3">Fornadas</a></li><li><a href="#encomendas" data-i18n="c_eye">Encomendas</a></li><li><a href="#visite" data-i18n="f_contacts">Contactos</a></li></ul></div>
+      <div><h4 data-i18n="f_follow">Siga-nos</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#">Google</a></li></ul></div>
+    </div>
+    <div class="copy">© <span id="y"></span> Padaria Forno d'Ouro · <span data-i18n="f_rights">Todos os direitos reservados</span></div>
+  </div>
+</footer>
+
+<script>
+  // Header muda de cor ao fazer scroll
+  const header=document.getElementById('header');
+  addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>60));
+
+  // Fecha o menu móvel ao clicar num link
+  document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('menu').classList.remove('open')));
+
+  // Filtro de produtos
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const f=t.dataset.f;
+    document.querySelectorAll('#grid .card').forEach(c=>c.classList.toggle('hide',f!=='all'&&c.dataset.c!==f));
+  }));
+
+  // Animação ao aparecer
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Se alguma foto falhar, mantém o fundo dourado em vez de um ícone partido
+  document.querySelectorAll('.ph img').forEach(img=>img.addEventListener('error',()=>img.style.visibility='hidden'));
+
+  // Destaca o dia de hoje no horário
+  const row=document.querySelector(`#hours tr[data-d="${new Date().getDay()}"]`);
+  if(row)row.classList.add('today');
+
+  document.getElementById('y').textContent=new Date().getFullYear();
+
+  // ---------- IDIOMAS ----------
+  const I18N = {"en": {"nav1": "The Bakery", "nav2": "Products", "nav3": "Bake Times", "nav4": "Visit Us", "h_eye": "Artisan bakery since 1987", "h_t": "The smell of fresh bread <em>starts here.</em>", "h_p": "Every morning before dawn we fire up the oven so your day starts with crusty bread, golden custard tarts and homemade cakes.", "h_b1": "See our products →", "h_b2": "Get directions", "bd1": "first batch", "bd2": "products every day", "bd3": "on Google", "hot_t": "Fresh bread now!", "hot_s": "Next batch at 12:00", "a_eye": "Our story", "a_h": "Handmade, with time and Portuguese flour.", "a_p1": "We are a family-run neighbourhood bakery. Our bread recipe has passed from grandparents to grandchildren and is still made the same way: sourdough, slow fermentation and a very hot oven.", "a_p2": "Here we know our customers by name and save the last pão de Deus for whoever arrives late.", "f1t": "Portuguese flour", "f1s": "From local mills", "f2t": "Slow fermentation", "f2s": "Up to 24 hours of sourdough", "f3t": "Several batches", "f3s": "Warm bread all day long", "f4t": "No preservatives", "f4s": "Only real ingredients", "p_eye": "From our oven", "p_h": "House favourites", "p_p": "A small taste of what you'll find on our counter every day. Come early — the custard tarts fly off the shelves!", "t_all": "All", "t_pao": "Bread", "t_past": "Pastries", "t_bol": "Cakes", "t_sal": "Savoury & Coffee", "tag1": "⭐ Best seller", "tag2": "Weekends only", "n_mm": "Sourdough Loaf", "n_choc": "Chocolate Cake", "n_tarte": "Berry Tart", "n_bisc": "Homemade Cookies", "n_chour": "Chouriço Bread", "d1": "Crispy puff pastry and velvety custard, with a dusting of cinnamon.", "d2": "Crunchy crust, moist crumb. Fermented for 24 hours.", "d3": "The classic Portuguese breakfast roll, always warm.", "d4": "Soft and buttery. Plain, ham & cheese or chocolate.", "d5": "Light dough, sugar on the outside and a generous egg custard filling.", "d6": "Moist and rich. Whole cakes available to order.", "d7": "Buttery base, pastry cream and fresh seasonal fruit.", "d8": "Traditional corn bread from the north, dense and fragrant.", "d9": "Butter, cinnamon or chocolate chip.", "d10": "Espresso with a custard tart. The perfect pair.", "d11": "Fresh from the oven, filled with smoked chouriço. Irresistible.", "d12": "Soft brioche topped with toasted coconut.", "slice": " /slice", "s_eye": "Warm bread all day", "s_h": "Baking schedule", "s_p": "No need to get up early for freshly baked bread. Pick your time.", "s1t": "Breakfast", "s1p": "Rolls, croissants and the first custard tarts.", "s2t": "Lunch", "s2p": "Mixed-grain bread, broa and chouriço bread.", "s3t": "Afternoon snack", "s3p": "Cakes of the day, pão de Deus and more custard tarts.", "s4t": "Dinner", "s4p": "Sourdough and Alentejo bread to take home.", "r_eye": "Taste once, come back forever", "r_h": "What our customers say", "r1": "“The best custard tarts in the neighbourhood, no doubt. Still warm in the late afternoon!”", "r2": "“The sourdough lasts the whole week and always tastes fresh. Family-style service.”", "r3": "“I ordered my daughter's birthday cake and it was a hit. Highly recommended.”", "r1s": "Customer for 6 years", "rg": "Google review", "c_eye": "Orders", "c_h": "Birthday cakes, bread for events or your breakfast set aside.", "c_p": "Contact us on WhatsApp or by phone. We prepare everything with 24 hours' notice.", "c_wa": "💬 Order on WhatsApp", "v_h": "We look forward to seeing you", "v_addr": "Address", "v_con": "Contact", "v_hrs": "Opening hours", "dw1": "Monday", "dw2": "Tuesday", "dw3": "Wednesday", "dw4": "Thursday", "dw5": "Friday", "dw6": "Saturday", "dw0": "Sunday", "v_map": "Open in Google Maps", "f_desc": "Artisan bakery and patisserie. Warm bread, Portuguese sweets and the best coffee in the neighbourhood.", "f_nav": "Navigation", "f_follow": "Follow us", "f_contacts": "Contacts", "f_rights": "All rights reserved"}, "es": {"nav1": "La Panadería", "nav2": "Productos", "nav3": "Hornadas", "nav4": "Visítenos", "h_eye": "Panadería artesanal desde 1987", "h_t": "El olor a pan caliente <em>empieza aquí.</em>", "h_p": "Cada madrugada encendemos el horno para que su día empiece con pan crujiente, pasteles de nata dorados y bizcochos caseros.", "h_b1": "Ver nuestros productos →", "h_b2": "Cómo llegar", "bd1": "primera hornada", "bd2": "productos diarios", "bd3": "en Google", "hot_t": "¡Pan caliente ahora!", "hot_s": "Próxima hornada a las 12:00", "a_eye": "Nuestra historia", "a_h": "Hecho a mano, con tiempo y harina portuguesa.", "a_p1": "Somos una panadería de barrio y familiar. La receta de nuestro pan ha pasado de abuelos a nietos y se sigue haciendo igual: masa madre, fermentación lenta y horno bien caliente.", "a_p2": "Aquí conocemos a cada cliente por su nombre y guardamos el último pão de Deus para quien llega tarde.", "f1t": "Harinas nacionales", "f1s": "De molinos portugueses", "f2t": "Fermentación lenta", "f2s": "Hasta 24 horas de masa madre", "f3t": "Varias hornadas", "f3s": "Pan caliente todo el día", "f4t": "Sin conservantes", "f4s": "Solo ingredientes de verdad", "p_eye": "De nuestro horno", "p_h": "Los favoritos de la casa", "p_p": "Una pequeña muestra de lo que encontrará cada día en nuestro mostrador. ¡Venga temprano, los pasteles de nata vuelan!", "t_all": "Todo", "t_pao": "Pan", "t_past": "Pastelería", "t_bol": "Tartas", "t_sal": "Salados y Café", "tag1": "⭐ El más vendido", "tag2": "Solo fines de semana", "n_mm": "Pan de Masa Madre", "n_choc": "Tarta de Chocolate", "n_tarte": "Tarta de Frutos Rojos", "n_bisc": "Galletas Caseras", "n_chour": "Pan con Chorizo", "d1": "Hojaldre crujiente y crema aterciopelada, con un toque de canela.", "d2": "Corteza crujiente, miga húmeda. Fermentado durante 24 horas.", "d3": "El clásico panecillo del desayuno portugués, siempre calentito.", "d4": "Esponjoso y mantecoso. Solo, mixto o con chocolate.", "d5": "Masa ligera, azúcar por fuera y generosa crema de huevo.", "d6": "Húmeda e intensa. También entera por encargo.", "d7": "Base de mantequilla, crema pastelera y fruta fresca de temporada.", "d8": "Receta tradicional del norte, densa y aromática.", "d9": "De mantequilla, de canela o con pepitas de chocolate.", "d10": "Café expreso con pastel de nata. La pareja perfecta.", "d11": "Recién salido del horno, con chorizo ahumado. Irresistible.", "d12": "Brioche esponjoso con cobertura de coco tostado.", "slice": " /porción", "s_eye": "Pan caliente todo el día", "s_h": "Horario de hornadas", "s_p": "No hace falta madrugar para llevarse pan recién hecho. Elija su hora.", "s1t": "Desayuno", "s1p": "Panecillos, cruasanes y los primeros pasteles de nata.", "s2t": "Almuerzo", "s2p": "Pan mixto, broa y pan con chorizo.", "s3t": "Merienda", "s3p": "Tartas del día, pão de Deus y más pasteles de nata.", "s4t": "Cena", "s4p": "Masa madre y pan alentejano para llevar a casa.", "r_eye": "Quien lo prueba, vuelve", "r_h": "Lo que dicen nuestros clientes", "r1": "“Los mejores pasteles de nata del barrio, sin duda. ¡Todavía calientes por la tarde!”", "r2": "“El pan de masa madre dura toda la semana y siempre está fresco. Trato familiar.”", "r3": "“Encargué la tarta de cumpleaños de mi hija y fue un éxito. Lo recomiendo con los ojos cerrados.”", "r1s": "Clienta desde hace 6 años", "rg": "Reseña de Google", "c_eye": "Encargos", "c_h": "Tartas de cumpleaños, pan para eventos o su desayuno reservado.", "c_p": "Contáctenos por WhatsApp o por teléfono. Lo preparamos todo con 24 h de antelación.", "c_wa": "💬 Encargar por WhatsApp", "v_h": "Le esperamos", "v_addr": "Dirección", "v_con": "Contacto", "v_hrs": "Horario", "dw1": "Lunes", "dw2": "Martes", "dw3": "Miércoles", "dw4": "Jueves", "dw5": "Viernes", "dw6": "Sábado", "dw0": "Domingo", "v_map": "Abrir en Google Maps", "f_desc": "Panadería y pastelería artesanal. Pan caliente, dulces portugueses y el mejor café del barrio.", "f_nav": "Navegación", "f_follow": "Síganos", "f_contacts": "Contactos", "f_rights": "Todos los derechos reservados"}, "fr": {"nav1": "La Boulangerie", "nav2": "Produits", "nav3": "Fournées", "nav4": "Nous trouver", "h_eye": "Boulangerie artisanale depuis 1987", "h_t": "L'odeur du pain chaud <em>commence ici.</em>", "h_p": "Chaque nuit, nous allumons le four pour que votre journée commence avec du pain croustillant, des pastéis de nata dorés et des gâteaux faits maison.", "h_b1": "Voir nos produits →", "h_b2": "Itinéraire", "bd1": "première fournée", "bd2": "produits par jour", "bd3": "sur Google", "hot_t": "Pain chaud maintenant !", "hot_s": "Prochaine fournée à 12h00", "a_eye": "Notre histoire", "a_h": "Fait main, avec du temps et de la farine portugaise.", "a_p1": "Nous sommes une boulangerie de quartier familiale. La recette de notre pain s'est transmise des grands-parents aux petits-enfants et se fait toujours de la même façon : levain, fermentation lente et four bien chaud.", "a_p2": "Ici, on connaît chaque client par son prénom et on garde le dernier pão de Deus pour ceux qui arrivent tard.", "f1t": "Farines portugaises", "f1s": "De moulins locaux", "f2t": "Fermentation lente", "f2s": "Jusqu'à 24 heures de levain", "f3t": "Plusieurs fournées", "f3s": "Du pain chaud toute la journée", "f4t": "Sans conservateurs", "f4s": "Que de vrais ingrédients", "p_eye": "De notre four", "p_h": "Les favoris de la maison", "p_p": "Un petit aperçu de ce que vous trouverez chaque jour sur notre comptoir. Venez tôt — les pastéis de nata partent vite !", "t_all": "Tout", "t_pao": "Pain", "t_past": "Viennoiseries", "t_bol": "Gâteaux", "t_sal": "Salé & Café", "tag1": "⭐ Meilleure vente", "tag2": "Le week-end uniquement", "n_mm": "Pain au Levain", "n_choc": "Gâteau au Chocolat", "n_tarte": "Tarte aux Fruits Rouges", "n_bisc": "Biscuits Maison", "n_chour": "Pain au Chouriço", "d1": "Pâte feuilletée croustillante et crème veloutée, avec une pointe de cannelle.", "d2": "Croûte croquante, mie moelleuse. Fermenté pendant 24 heures.", "d3": "Le petit pain classique du petit-déjeuner portugais, toujours tiède.", "d4": "Moelleux et beurré. Nature, jambon-fromage ou au chocolat.", "d5": "Pâte légère, sucre à l'extérieur et une généreuse crème aux œufs.", "d6": "Fondant et intense. Aussi entier sur commande.", "d7": "Pâte sablée, crème pâtissière et fruits frais de saison.", "d8": "Pain de maïs traditionnel du nord, dense et parfumé.", "d9": "Au beurre, à la cannelle ou aux pépites de chocolat.", "d10": "Un expresso avec un pastel de nata. Le duo parfait.", "d11": "Tout juste sorti du four, au chouriço fumé. Irrésistible.", "d12": "Brioche moelleuse recouverte de noix de coco grillée.", "slice": " /part", "s_eye": "Du pain chaud toute la journée", "s_h": "Horaires des fournées", "s_p": "Pas besoin de se lever tôt pour avoir du pain tout juste sorti du four. Choisissez votre heure.", "s1t": "Petit-déjeuner", "s1p": "Petits pains, croissants et les premiers pastéis de nata.", "s2t": "Déjeuner", "s2p": "Pain de campagne, broa et pain au chouriço.", "s3t": "Goûter", "s3p": "Gâteaux du jour, pão de Deus et encore des pastéis de nata.", "s4t": "Dîner", "s4p": "Pain au levain et pain de l'Alentejo à emporter.", "r_eye": "Qui goûte, revient", "r_h": "Ce que disent nos clients", "r1": "« Les meilleurs pastéis de nata du quartier, sans aucun doute. Encore chauds en fin d'après-midi ! »", "r2": "« Le pain au levain se garde toute la semaine et reste toujours frais. Un accueil familial. »", "r3": "« J'ai commandé le gâteau d'anniversaire de ma fille et ce fut un succès. Je recommande les yeux fermés. »", "r1s": "Cliente depuis 6 ans", "rg": "Avis Google", "c_eye": "Commandes", "c_h": "Gâteaux d'anniversaire, pain pour vos événements ou votre petit-déjeuner réservé.", "c_p": "Contactez-nous par WhatsApp ou par téléphone. Nous préparons tout avec 24 h d'avance.", "c_wa": "💬 Commander sur WhatsApp", "v_h": "Nous vous attendons", "v_addr": "Adresse", "v_con": "Contact", "v_hrs": "Horaires", "dw1": "Lundi", "dw2": "Mardi", "dw3": "Mercredi", "dw4": "Jeudi", "dw5": "Vendredi", "dw6": "Samedi", "dw0": "Dimanche", "v_map": "Ouvrir dans Google Maps", "f_desc": "Boulangerie-pâtisserie artisanale. Pain chaud, douceurs portugaises et le meilleur café du quartier.", "f_nav": "Navigation", "f_follow": "Suivez-nous", "f_contacts": "Contacts", "f_rights": "Tous droits réservés"}, "it": {"nav1": "La Panetteria", "nav2": "Prodotti", "nav3": "Sfornate", "nav4": "Vieni a trovarci", "h_eye": "Panetteria artigianale dal 1987", "h_t": "Il profumo del pane caldo <em>inizia qui.</em>", "h_p": "Ogni notte accendiamo il forno perché la tua giornata inizi con pane croccante, pastéis de nata dorati e dolci fatti in casa.", "h_b1": "Scopri i nostri prodotti →", "h_b2": "Come arrivare", "bd1": "prima sfornata", "bd2": "prodotti al giorno", "bd3": "su Google", "hot_t": "Pane caldo adesso!", "hot_s": "Prossima sfornata alle 12:00", "a_eye": "La nostra storia", "a_h": "Fatto a mano, con tempo e farina portoghese.", "a_p1": "Siamo una panetteria di quartiere a conduzione familiare. La ricetta del nostro pane è passata dai nonni ai nipoti e si prepara ancora allo stesso modo: lievito madre, lievitazione lenta e forno bello caldo.", "a_p2": "Qui conosciamo i clienti per nome e teniamo da parte l'ultimo pão de Deus per chi arriva tardi.", "f1t": "Farine portoghesi", "f1s": "Da mulini locali", "f2t": "Lievitazione lenta", "f2s": "Fino a 24 ore di lievito madre", "f3t": "Più sfornate", "f3s": "Pane caldo tutto il giorno", "f4t": "Senza conservanti", "f4s": "Solo ingredienti veri", "p_eye": "Dal nostro forno", "p_h": "I preferiti della casa", "p_p": "Un piccolo assaggio di ciò che trovi ogni giorno al nostro banco. Vieni presto: i pastéis de nata vanno a ruba!", "t_all": "Tutto", "t_pao": "Pane", "t_past": "Pasticceria", "t_bol": "Torte", "t_sal": "Salato & Caffè", "tag1": "⭐ Il più venduto", "tag2": "Solo nel fine settimana", "n_mm": "Pane a Lievito Madre", "n_choc": "Torta al Cioccolato", "n_tarte": "Crostata ai Frutti di Bosco", "n_bisc": "Biscotti Fatti in Casa", "n_chour": "Pane con Chouriço", "d1": "Sfoglia croccante e crema vellutata, con un pizzico di cannella.", "d2": "Crosta croccante, mollica umida. Lievitato per 24 ore.", "d3": "Il classico panino della colazione portoghese, sempre caldo.", "d4": "Soffice e burroso. Semplice, prosciutto e formaggio o al cioccolato.", "d5": "Impasto leggero, zucchero fuori e generosa crema all'uovo.", "d6": "Umida e intensa. Anche intera su ordinazione.", "d7": "Base al burro, crema pasticcera e frutta fresca di stagione.", "d8": "Pane di mais tradizionale del nord, denso e profumato.", "d9": "Al burro, alla cannella o con gocce di cioccolato.", "d10": "Espresso con pastel de nata. La coppia perfetta.", "d11": "Appena sfornato, con chouriço affumicato. Irresistibile.", "d12": "Brioche soffice con copertura di cocco tostato.", "slice": " /fetta", "s_eye": "Pane caldo tutto il giorno", "s_h": "Orari delle sfornate", "s_p": "Non serve alzarsi presto per avere pane appena sfornato. Scegli tu l'orario.", "s1t": "Colazione", "s1p": "Panini, croissant e i primi pastéis de nata.", "s2t": "Pranzo", "s2p": "Pane misto, broa e pane con chouriço.", "s3t": "Merenda", "s3p": "Torte del giorno, pão de Deus e altri pastéis de nata.", "s4t": "Cena", "s4p": "Lievito madre e pane dell'Alentejo da portare a casa.", "r_eye": "Chi assaggia, ritorna", "r_h": "Cosa dicono i nostri clienti", "r1": "“I migliori pastéis de nata del quartiere, senza dubbio. Ancora caldi nel tardo pomeriggio!”", "r2": "“Il pane a lievito madre dura tutta la settimana ed è sempre fresco. Servizio familiare.”", "r3": "“Ho ordinato la torta di compleanno di mia figlia ed è stata un successo. Lo consiglio a occhi chiusi.”", "r1s": "Cliente da 6 anni", "rg": "Recensione Google", "c_eye": "Ordini", "c_h": "Torte di compleanno, pane per eventi o la tua colazione prenotata.", "c_p": "Contattaci su WhatsApp o per telefono. Prepariamo tutto con 24 ore di anticipo.", "c_wa": "💬 Ordina su WhatsApp", "v_h": "Ti aspettiamo", "v_addr": "Indirizzo", "v_con": "Contatti", "v_hrs": "Orari", "dw1": "Lunedì", "dw2": "Martedì", "dw3": "Mercoledì", "dw4": "Giovedì", "dw5": "Venerdì", "dw6": "Sabato", "dw0": "Domenica", "v_map": "Apri in Google Maps", "f_desc": "Panetteria e pasticceria artigianale. Pane caldo, dolci portoghesi e il miglior caffè del quartiere.", "f_nav": "Navigazione", "f_follow": "Seguici", "f_contacts": "Contatti", "f_rights": "Tutti i diritti riservati"}, "de": {"nav1": "Die Bäckerei", "nav2": "Produkte", "nav3": "Backzeiten", "nav4": "Besuchen Sie uns", "h_eye": "Handwerksbäckerei seit 1987", "h_t": "Der Duft von frischem Brot <em>beginnt hier.</em>", "h_p": "Jeden Morgen vor Sonnenaufgang heizen wir den Ofen an, damit Ihr Tag mit knusprigem Brot, goldenen Pastéis de Nata und hausgemachtem Kuchen beginnt.", "h_b1": "Unsere Produkte ansehen →", "h_b2": "Anfahrt", "bd1": "erste Backrunde", "bd2": "Produkte täglich", "bd3": "auf Google", "hot_t": "Jetzt frisches Brot!", "hot_s": "Nächste Backrunde um 12:00 Uhr", "a_eye": "Unsere Geschichte", "a_h": "Handgemacht, mit Zeit und portugiesischem Mehl.", "a_p1": "Wir sind eine familiengeführte Bäckerei aus der Nachbarschaft. Unser Brotrezept wurde von den Großeltern an die Enkel weitergegeben und wird noch immer auf die gleiche Weise gebacken: Sauerteig, lange Teigführung und ein richtig heißer Ofen.", "a_p2": "Hier kennt man die Kunden beim Namen und hebt das letzte Pão de Deus für die Spätankömmlinge auf.", "f1t": "Portugiesisches Mehl", "f1s": "Aus heimischen Mühlen", "f2t": "Lange Teigführung", "f2s": "Bis zu 24 Stunden Sauerteig", "f3t": "Mehrere Backrunden", "f3s": "Warmes Brot den ganzen Tag", "f4t": "Ohne Konservierungsstoffe", "f4s": "Nur echte Zutaten", "p_eye": "Aus unserem Ofen", "p_h": "Die Lieblinge des Hauses", "p_p": "Ein kleiner Vorgeschmack auf das, was Sie täglich an unserer Theke finden. Kommen Sie früh – die Pastéis de Nata sind schnell weg!", "t_all": "Alles", "t_pao": "Brot", "t_past": "Feingebäck", "t_bol": "Kuchen", "t_sal": "Herzhaftes & Kaffee", "tag1": "⭐ Bestseller", "tag2": "Nur am Wochenende", "n_mm": "Sauerteigbrot", "n_choc": "Schokoladenkuchen", "n_tarte": "Beerentarte", "n_bisc": "Hausgemachte Kekse", "n_chour": "Brot mit Chouriço", "d1": "Knuspriger Blätterteig und samtige Creme, mit einer Prise Zimt.", "d2": "Knusprige Kruste, saftige Krume. 24 Stunden gereift.", "d3": "Das klassische portugiesische Frühstücksbrötchen, immer warm.", "d4": "Weich und buttrig. Natur, mit Schinken und Käse oder mit Schokolade.", "d5": "Leichter Teig, außen Zucker und eine großzügige Eiercreme-Füllung.", "d6": "Saftig und intensiv. Auch als ganzer Kuchen auf Bestellung.", "d7": "Butteriger Boden, Vanillecreme und frisches Obst der Saison.", "d8": "Traditionelles Maisbrot aus dem Norden, kompakt und aromatisch.", "d9": "Mit Butter, Zimt oder Schokostückchen.", "d10": "Espresso mit Pastel de Nata. Das perfekte Paar.", "d11": "Frisch aus dem Ofen, mit geräuchertem Chouriço. Unwiderstehlich.", "d12": "Weiche Brioche mit geröstetem Kokos.", "slice": " /Stück", "s_eye": "Warmes Brot den ganzen Tag", "s_h": "Unsere Backzeiten", "s_p": "Sie müssen nicht früh aufstehen, um frisch gebackenes Brot zu bekommen. Wählen Sie Ihre Uhrzeit.", "s1t": "Frühstück", "s1p": "Brötchen, Croissants und die ersten Pastéis de Nata.", "s2t": "Mittagessen", "s2p": "Mischbrot, Broa und Brot mit Chouriço.", "s3t": "Nachmittag", "s3p": "Kuchen des Tages, Pão de Deus und noch mehr Pastéis de Nata.", "s4t": "Abendessen", "s4p": "Sauerteigbrot und Alentejo-Brot für zu Hause.", "r_eye": "Wer probiert, kommt wieder", "r_h": "Was unsere Kunden sagen", "r1": "„Die besten Pastéis de Nata im Viertel, ganz klar. Sogar am späten Nachmittag noch warm!“", "r2": "„Das Sauerteigbrot hält die ganze Woche und ist immer frisch. Familiärer Service.“", "r3": "„Ich habe die Geburtstagstorte meiner Tochter bestellt und sie war ein voller Erfolg. Absolut empfehlenswert.“", "r1s": "Kundin seit 6 Jahren", "rg": "Google-Bewertung", "c_eye": "Bestellungen", "c_h": "Geburtstagstorten, Brot für Veranstaltungen oder Ihr reserviertes Frühstück.", "c_p": "Kontaktieren Sie uns per WhatsApp oder telefonisch. Wir bereiten alles mit 24 Stunden Vorlauf vor.", "c_wa": "💬 Per WhatsApp bestellen", "v_h": "Wir freuen uns auf Sie", "v_addr": "Adresse", "v_con": "Kontakt", "v_hrs": "Öffnungszeiten", "dw1": "Montag", "dw2": "Dienstag", "dw3": "Mittwoch", "dw4": "Donnerstag", "dw5": "Freitag", "dw6": "Samstag", "dw0": "Sonntag", "v_map": "In Google Maps öffnen", "f_desc": "Handwerksbäckerei und Konditorei. Warmes Brot, portugiesische Süßspeisen und der beste Kaffee im Viertel.", "f_nav": "Navigation", "f_follow": "Folgen Sie uns", "f_contacts": "Kontakt", "f_rights": "Alle Rechte vorbehalten"}, "uk": {"nav1": "Пекарня", "nav2": "Продукція", "nav3": "Години випічки", "nav4": "Завітайте до нас", "h_eye": "Ремісна пекарня з 1987 року", "h_t": "Аромат теплого хліба <em>починається тут.</em>", "h_p": "Щоночі ми розпалюємо піч, щоб ваш день починався з хрусткого хліба, золотистих пастейш де ната та домашніх тортів.", "h_b1": "Переглянути продукцію →", "h_b2": "Як дістатися", "bd1": "перша випічка", "bd2": "продуктів щодня", "bd3": "у Google", "hot_t": "Теплий хліб уже є!", "hot_s": "Наступна випічка о 12:00", "a_eye": "Наша історія", "a_h": "Зроблено вручну, з часом і португальським борошном.", "a_p1": "Ми — сімейна пекарня по сусідству. Рецепт нашого хліба передавався від бабусь і дідусів онукам і досі готується так само: закваска, повільне бродіння і добре розпалена піч.", "a_p2": "Тут знають кожного клієнта на ім'я і залишають останній pão de Deus для тих, хто приходить пізніше.", "f1t": "Португальське борошно", "f1s": "З місцевих млинів", "f2t": "Повільне бродіння", "f2s": "До 24 годин на заквасці", "f3t": "Кілька випічок", "f3s": "Теплий хліб протягом дня", "f4t": "Без консервантів", "f4s": "Лише справжні інгредієнти", "p_eye": "З нашої печі", "p_h": "Улюблене в нашій пекарні", "p_p": "Невелика добірка того, що ви щодня знайдете на нашій вітрині. Приходьте раніше — пастейш де ната розлітаються миттєво!", "t_all": "Усе", "t_pao": "Хліб", "t_past": "Випічка", "t_bol": "Торти", "t_sal": "Закуски та кава", "tag1": "⭐ Хіт продажу", "tag2": "Лише у вихідні", "n_mm": "Хліб на заквасці", "n_choc": "Шоколадний торт", "n_tarte": "Тарт з ягодами", "n_bisc": "Домашнє печиво", "n_chour": "Хліб з чорісо", "d1": "Хрустке листкове тісто й ніжний крем із дрібкою кориці.", "d2": "Хрустка скоринка, вологий м'якуш. Бродить 24 години.", "d3": "Класична булочка для португальського сніданку, завжди тепла.", "d4": "М'який і масляний. Простий, з шинкою й сиром або з шоколадом.", "d5": "Легке тісто, цукор зверху і щедра яєчна начинка.", "d6": "Вологий і насичений. Цілий — під замовлення.", "d7": "Пісочна основа, заварний крем і свіжі сезонні фрукти.", "d8": "Традиційний кукурудзяний хліб з півночі, щільний і ароматний.", "d9": "Вершкове, з корицею або з шоколадною крихтою.", "d10": "Еспресо з пастейш де ната. Ідеальна пара.", "d11": "Щойно з печі, з копченою ковбаскою чорісо. Неможливо встояти.", "d12": "М'яка бріош із посипкою з підсмаженого кокосу.", "slice": " /шматок", "s_eye": "Теплий хліб увесь день", "s_h": "Розклад випічки", "s_p": "Не потрібно вставати рано, щоб купити свіжий хліб. Оберіть зручний час.", "s1t": "Сніданок", "s1p": "Булочки, круасани та перші пастейш де ната.", "s2t": "Обід", "s2p": "Змішаний хліб, броа та хліб з чорісо.", "s3t": "Полуденок", "s3p": "Торти дня, pão de Deus і ще більше пастейш де ната.", "s4t": "Вечеря", "s4p": "Хліб на заквасці та алентежуський хліб додому.", "r_eye": "Хто скуштує — повертається", "r_h": "Що кажуть наші клієнти", "r1": "«Найкращі пастейш де ната в районі, без сумніву. Ще теплі під вечір!»", "r2": "«Хліб на заквасці зберігається цілий тиждень і завжди свіжий. Сімейна атмосфера.»", "r3": "«Замовила торт на день народження доньки — це був успіх. Рекомендую з заплющеними очима.»", "r1s": "Клієнтка вже 6 років", "rg": "Відгук у Google", "c_eye": "Замовлення", "c_h": "Торти на день народження, хліб для заходів або ваш заброньований сніданок.", "c_p": "Зв'яжіться з нами у WhatsApp або телефоном. Ми все приготуємо за 24 години.", "c_wa": "💬 Замовити у WhatsApp", "v_h": "Чекаємо на вас", "v_addr": "Адреса", "v_con": "Контакти", "v_hrs": "Години роботи", "dw1": "Понеділок", "dw2": "Вівторок", "dw3": "Середа", "dw4": "Четвер", "dw5": "П'ятниця", "dw6": "Субота", "dw0": "Неділя", "v_map": "Відкрити в Google Maps", "f_desc": "Ремісна пекарня та кондитерська. Теплий хліб, португальські солодощі й найкраща кава в районі.", "f_nav": "Навігація", "f_follow": "Ми в соцмережах", "f_contacts": "Контакти", "f_rights": "Усі права захищено"}, "ru": {"nav1": "Пекарня", "nav2": "Продукция", "nav3": "Время выпечки", "nav4": "Ждём в гости", "h_eye": "Ремесленная пекарня с 1987 года", "h_t": "Аромат тёплого хлеба <em>начинается здесь.</em>", "h_p": "Каждую ночь мы разжигаем печь, чтобы ваш день начинался с хрустящего хлеба, золотистых пастел де ната и домашних тортов.", "h_b1": "Смотреть продукцию →", "h_b2": "Как добраться", "bd1": "первая выпечка", "bd2": "продуктов ежедневно", "bd3": "в Google", "hot_t": "Тёплый хлеб уже здесь!", "hot_s": "Следующая выпечка в 12:00", "a_eye": "Наша история", "a_h": "Сделано вручную, не спеша и из португальской муки.", "a_p1": "Мы — семейная пекарня по соседству. Рецепт нашего хлеба передавался от бабушек и дедушек внукам, и его до сих пор готовят так же: закваска, медленная ферментация и хорошо разогретая печь.", "a_p2": "Здесь знают каждого покупателя по имени и оставляют последний pão de Deus для тех, кто приходит позже.", "f1t": "Португальская мука", "f1s": "С местных мельниц", "f2t": "Медленная ферментация", "f2s": "До 24 часов на закваске", "f3t": "Несколько выпечек", "f3s": "Тёплый хлеб весь день", "f4t": "Без консервантов", "f4s": "Только настоящие ингредиенты", "p_eye": "Из нашей печи", "p_h": "Фавориты пекарни", "p_p": "Небольшая подборка того, что вы каждый день найдёте на нашей витрине. Приходите пораньше — пастел де ната разлетаются мгновенно!", "t_all": "Всё", "t_pao": "Хлеб", "t_past": "Выпечка", "t_bol": "Торты", "t_sal": "Закуски и кофе", "tag1": "⭐ Хит продаж", "tag2": "Только по выходным", "n_mm": "Хлеб на закваске", "n_choc": "Шоколадный торт", "n_tarte": "Тарт с ягодами", "n_bisc": "Домашнее печенье", "n_chour": "Хлеб с чорисо", "d1": "Хрустящее слоёное тесто и нежный крем с щепоткой корицы.", "d2": "Хрустящая корочка, влажный мякиш. Ферментируется 24 часа.", "d3": "Классическая булочка для португальского завтрака, всегда тёплая.", "d4": "Мягкий и сливочный. Простой, с ветчиной и сыром или с шоколадом.", "d5": "Лёгкое тесто, сахар снаружи и щедрая яичная начинка.", "d6": "Влажный и насыщенный. Целиком — под заказ.", "d7": "Песочная основа, заварной крем и свежие сезонные фрукты.", "d8": "Традиционный кукурузный хлеб с севера, плотный и ароматный.", "d9": "Сливочное, с корицей или с шоколадной крошкой.", "d10": "Эспрессо с пастел де ната. Идеальная пара.", "d11": "Только из печи, с копчёной колбасой чорисо. Невозможно устоять.", "d12": "Мягкая бриошь с посыпкой из поджаренного кокоса.", "slice": " /кусок", "s_eye": "Тёплый хлеб весь день", "s_h": "Расписание выпечки", "s_p": "Не нужно вставать рано, чтобы купить свежий хлеб. Выберите удобное время.", "s1t": "Завтрак", "s1p": "Булочки, круассаны и первые пастел де ната.", "s2t": "Обед", "s2p": "Смешанный хлеб, броа и хлеб с чорисо.", "s3t": "Полдник", "s3p": "Торты дня, pão de Deus и ещё пастел де ната.", "s4t": "Ужин", "s4p": "Хлеб на закваске и алентежанский хлеб домой.", "r_eye": "Кто попробует — вернётся", "r_h": "Что говорят наши клиенты", "r1": "«Лучшие пастел де ната в районе, без сомнения. Ещё тёплые к вечеру!»", "r2": "«Хлеб на закваске хранится всю неделю и всегда свежий. Семейная атмосфера.»", "r3": "«Заказала торт на день рождения дочери — это был успех. Рекомендую не раздумывая.»", "r1s": "Клиентка уже 6 лет", "rg": "Отзыв в Google", "c_eye": "Заказы", "c_h": "Торты на день рождения, хлеб для мероприятий или ваш забронированный завтрак.", "c_p": "Свяжитесь с нами в WhatsApp или по телефону. Мы всё приготовим за 24 часа.", "c_wa": "💬 Заказать в WhatsApp", "v_h": "Ждём вас", "v_addr": "Адрес", "v_con": "Контакты", "v_hrs": "Часы работы", "dw1": "Понедельник", "dw2": "Вторник", "dw3": "Среда", "dw4": "Четверг", "dw5": "Пятница", "dw6": "Суббота", "dw0": "Воскресенье", "v_map": "Открыть в Google Maps", "f_desc": "Ремесленная пекарня и кондитерская. Тёплый хлеб, португальские сладости и лучший кофе в районе.", "f_nav": "Навигация", "f_follow": "Мы в соцсетях", "f_contacts": "Контакты", "f_rights": "Все права защищены"}, "ja": {"nav1": "当店について", "nav2": "商品", "nav3": "焼き上がり時間", "nav4": "アクセス", "h_eye": "1987年創業の手作りベーカリー", "h_t": "焼きたてパンの香りは<em>ここから。</em>", "h_p": "毎朝夜明け前に窯に火を入れ、パリッと焼けたパン、黄金色のパステル・デ・ナタ、手作りケーキであなたの一日の始まりをお届けします。", "h_b1": "商品を見る →", "h_b2": "行き方", "bd1": "最初の焼き上がり", "bd2": "毎日の商品数", "bd3": "Googleの評価", "hot_t": "焼きたてパンあります!", "hot_s": "次の焼き上がりは12:00", "a_eye": "私たちの物語", "a_h": "手作りで、時間をかけて、ポルトガル産の小麦粉で。", "a_p1": "私たちは家族経営の街のパン屋です。パンのレシピは祖父母から孫へと受け継がれ、今も同じ方法で作っています。天然酵母、じっくり長時間発酵、そしてしっかり熱した窯。", "a_p2": "ここではお客様を名前でお呼びし、遅く来る方のために最後のパン・デ・デウスを取っておきます。", "f1t": "ポルトガル産小麦粉", "f1s": "国内の製粉所から", "f2t": "長時間発酵", "f2s": "最大24時間の天然酵母", "f3t": "一日に何度も焼き上げ", "f3s": "一日中温かいパン", "f4t": "保存料不使用", "f4s": "本物の素材だけ", "p_eye": "窯から届く味", "p_h": "当店の人気商品", "p_p": "毎日カウンターに並ぶ商品の一部をご紹介します。お早めにどうぞ — パステル・デ・ナタはすぐに売り切れます!", "t_all": "すべて", "t_pao": "パン", "t_past": "ペストリー", "t_bol": "ケーキ", "t_sal": "軽食&コーヒー", "tag1": "⭐ 一番人気", "tag2": "週末限定", "n_mm": "天然酵母パン", "n_choc": "チョコレートケーキ", "n_tarte": "ベリーのタルト", "n_bisc": "手作りクッキー", "n_chour": "チョリソーパン", "d1": "サクサクのパイ生地となめらかなカスタード、シナモンを添えて。", "d2": "カリッとした皮としっとりした中身。24時間発酵。", "d3": "ポルトガルの朝食の定番ロールパン。いつも温かい。", "d4": "ふんわりバター風味。プレーン、ハム&チーズ、チョコレート。", "d5": "軽い生地に砂糖をまぶし、たっぷりの卵クリーム入り。", "d6": "しっとり濃厚。ホールケーキのご予約も承ります。", "d7": "バター風味の生地、カスタードクリーム、旬の新鮮なフルーツ。", "d8": "北部の伝統的なとうもろこしパン。どっしりと香り豊か。", "d9": "バター、シナモン、チョコチップ。", "d10": "エスプレッソとパステル・デ・ナタ。最高の組み合わせ。", "d11": "焼きたてに燻製チョリソーを包んで。やみつきの味。", "d12": "ふんわりブリオッシュにトーストしたココナッツをのせて。", "slice": " /1切れ", "s_eye": "一日中焼きたてパン", "s_h": "焼き上がり時間", "s_p": "早起きしなくても焼きたてのパンが買えます。お好きな時間にどうぞ。", "s1t": "朝食", "s1p": "ロールパン、クロワッサン、最初のパステル・デ・ナタ。", "s2t": "昼食", "s2p": "ミックス粉のパン、ブロア、チョリソーパン。", "s3t": "おやつ", "s3p": "本日のケーキ、パン・デ・デウス、パステル・デ・ナタ。", "s4t": "夕食", "s4p": "天然酵母パンとアレンテージョ風パンをお持ち帰りに。", "r_eye": "一度食べたら、また来たくなる", "r_h": "お客様の声", "r1": "「間違いなくこの辺りで一番のパステル・デ・ナタ。夕方でもまだ温かい!」", "r2": "「天然酵母パンは一週間もち、いつも新鮮。家族的な温かい接客です。」", "r3": "「娘の誕生日ケーキを注文したら大好評でした。自信を持っておすすめします。」", "r1s": "6年来のお客様", "rg": "Googleレビュー", "c_eye": "ご注文", "c_h": "誕生日ケーキ、イベント用のパン、朝食の取り置きも承ります。", "c_p": "WhatsAppまたはお電話でご連絡ください。24時間前までのご注文で準備いたします。", "c_wa": "💬 WhatsAppで注文", "v_h": "お待ちしております", "v_addr": "住所", "v_con": "連絡先", "v_hrs": "営業時間", "dw1": "月曜日", "dw2": "火曜日", "dw3": "水曜日", "dw4": "木曜日", "dw5": "金曜日", "dw6": "土曜日", "dw0": "日曜日", "v_map": "Googleマップで開く", "f_desc": "手作りのパンと焼き菓子の店。焼きたてパン、ポルトガル菓子、街一番のコーヒー。", "f_nav": "メニュー", "f_follow": "フォローする", "f_contacts": "お問い合わせ", "f_rights": "無断転載禁止"}, "zh": {"nav1": "面包坊", "nav2": "产品", "nav3": "出炉时间", "nav4": "欢迎光临", "h_eye": "始于1987年的手工面包坊", "h_t": "新鲜面包的香气<em>从这里开始。</em>", "h_p": "每天凌晨我们点燃烤炉,让您的一天从酥脆的面包、金黄的葡式蛋挞和自制蛋糕开始。", "h_b1": "查看我们的产品 →", "h_b2": "如何到达", "bd1": "首批出炉", "bd2": "每日产品", "bd3": "Google评分", "hot_t": "现在有热面包!", "hot_s": "下一批出炉时间 12:00", "a_eye": "我们的故事", "a_h": "手工制作,慢工细活,选用葡萄牙面粉。", "a_p1": "我们是一家家庭经营的社区面包坊。面包配方由祖辈传给孙辈,至今仍以同样的方式制作:天然酵种、慢速发酵和炽热的烤炉。", "a_p2": "在这里,我们叫得出每位顾客的名字,还会为晚到的人留下最后一个上帝面包(pão de Deus)。", "f1t": "葡萄牙面粉", "f1s": "来自本地磨坊", "f2t": "慢速发酵", "f2s": "长达24小时的天然酵种", "f3t": "多次出炉", "f3s": "全天都有热面包", "f4t": "无防腐剂", "f4s": "只用真材实料", "p_eye": "来自我们的烤炉", "p_h": "本店招牌", "p_p": "这里只是我们柜台每日出品的一小部分。早点来——葡式蛋挞很快就卖光了!", "t_all": "全部", "t_pao": "面包", "t_past": "酥点", "t_bol": "蛋糕", "t_sal": "咸点与咖啡", "tag1": "⭐ 最畅销", "tag2": "仅限周末", "n_mm": "天然酵种面包", "n_choc": "巧克力蛋糕", "n_tarte": "莓果挞", "n_bisc": "自制饼干", "n_chour": "葡式香肠面包", "d1": "酥脆的千层酥皮配丝滑的蛋奶馅,撒上少许肉桂。", "d2": "外皮酥脆,内里湿润。发酵24小时。", "d3": "葡萄牙早餐的经典小面包,总是热乎乎的。", "d4": "松软香浓。原味、火腿芝士或巧克力味。", "d5": "轻盈的面团,外裹砂糖,内有满满的蛋奶馅。", "d6": "湿润浓郁。也可预订整个蛋糕。", "d7": "黄油挞底、卡仕达酱和当季新鲜水果。", "d8": "北部传统玉米面包,扎实而芳香。", "d9": "黄油、肉桂或巧克力豆口味。", "d10": "意式浓缩咖啡配葡式蛋挞。完美搭配。", "d11": "刚出炉,夹着烟熏葡式香肠。让人无法抗拒。", "d12": "松软布里欧修,铺满烤椰丝。", "slice": " /块", "s_eye": "全天供应热面包", "s_h": "出炉时间表", "s_p": "不必早起也能买到新鲜出炉的面包。选择适合您的时间。", "s1t": "早餐", "s1p": "小面包、可颂和第一批葡式蛋挞。", "s2t": "午餐", "s2p": "杂粮面包、玉米面包和香肠面包。", "s3t": "下午茶", "s3p": "当日蛋糕、上帝面包和更多葡式蛋挞。", "s4t": "晚餐", "s4p": "天然酵种面包和阿连特茹面包,带回家享用。", "r_eye": "尝过的人都会再来", "r_h": "顾客怎么说", "r1": "“毫无疑问是这一带最好的葡式蛋挞。傍晚还是热的!”", "r2": "“天然酵种面包能放一整周,一直很新鲜。家庭般的服务。”", "r3": "“我为女儿订了生日蛋糕,大获成功。强烈推荐。”", "r1s": "6年老顾客", "rg": "Google评价", "c_eye": "订购", "c_h": "生日蛋糕、活动用面包,或为您预留的早餐。", "c_p": "通过WhatsApp或电话联系我们。提前24小时预订即可。", "c_wa": "💬 通过WhatsApp订购", "v_h": "期待您的光临", "v_addr": "地址", "v_con": "联系方式", "v_hrs": "营业时间", "dw1": "星期一", "dw2": "星期二", "dw3": "星期三", "dw4": "星期四", "dw5": "星期五", "dw6": "星期六", "dw0": "星期日", "v_map": "在Google地图中打开", "f_desc": "手工面包与糕点店。热面包、葡式甜点和街区最好的咖啡。", "f_nav": "导航", "f_follow": "关注我们", "f_contacts": "联系我们", "f_rights": "版权所有"}};
+  const LANG_FLAGS = {"pt": "https://flagcdn.com/w40/pt.png", "en": "https://flagcdn.com/w40/gb.png", "es": "https://flagcdn.com/w40/es.png", "fr": "https://flagcdn.com/w40/fr.png", "it": "https://flagcdn.com/w40/it.png", "de": "https://flagcdn.com/w40/de.png", "uk": "https://flagcdn.com/w40/ua.png", "ru": "https://flagcdn.com/w40/ru.png", "ja": "https://flagcdn.com/w40/jp.png", "zh": "https://flagcdn.com/w40/cn.png"};
+  const ptText = {};
+  document.querySelectorAll('[data-i18n]').forEach(el => { ptText[el.dataset.i18n] = el.innerHTML; });
+  const langBox = document.getElementById('lang');
+  function setLang(lang) {
+    if (lang !== 'pt' && !I18N[lang]) lang = 'pt';
+    const dict = I18N[lang] || {};
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.dataset.i18n;
+      el.innerHTML = dict[k] ?? ptText[k];
+    });
+    document.documentElement.lang = lang === 'pt' ? 'pt-PT' : lang;
+    document.getElementById('langFlag').src = LANG_FLAGS[lang];
+    document.getElementById('langCode').textContent = lang.toUpperCase();
+    document.querySelectorAll('#langMenu button').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+  document.getElementById('langBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    const open = langBox.classList.toggle('open');
+    e.currentTarget.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('#langMenu button').forEach(b => b.addEventListener('click', () => {
+    setLang(b.dataset.lang);
+    langBox.classList.remove('open');
+  }));
+  document.addEventListener('click', () => langBox.classList.remove('open'));
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  setLang(saved || (navigator.language || 'pt').slice(0, 2));
+</script>
+</body>
+</html>
